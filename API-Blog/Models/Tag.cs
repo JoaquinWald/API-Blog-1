@@ -7,7 +7,8 @@ namespace API_Blog.Models
 		public int TagId { get; set; }
 		public string Name { get; set; }
 
-		[JsonIgnore]
+
+        [JsonIgnore]
 		public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
 	}
 }

@@ -8,6 +8,7 @@ namespace API_Blog.DTOs
 		public string Content { get; set; }
 		public int CategorieId { get; set; }
 		public int AuthorId { get; set; }
-		public List<int> TagIds { get; set; }
+		//public List<int> TagIds { get; set; } = new List<int> { 0 };
+		public List<int> Tags { get; set; } = new List<int> { 0 };
 	}
 }

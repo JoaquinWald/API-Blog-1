@@ -43,33 +43,33 @@ namespace API_Blog.Controllers
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
-			}
+			};
 
-			//ArticleDTO
-			var article = new Article
+			//New instance of Article Model-class
+			Article article = new Article
 			{
-				CategorieId = articleDto.CategorieId,
-				AuthorId = articleDto.AuthorId,
 				Title = articleDto.Title,
 				Content = articleDto.Content,
 				CreatedDate = DateTime.Now,
-				Tags = new List<Tag>() //Initializing Tags collection
+				CategorieId = articleDto.CategorieId,
+				AuthorId = articleDto.AuthorId,
+				Tags = new List<Tag>() //Initializing Tags List 
 			};
 
-			//Add tags to the collection of the Article
-			foreach (var tagId in articleDto.TagIds)
+			foreach (var tagId in articleDto.Tags) //Add tags to the List
 			{
 				var tag = await _context.Tags.FindAsync(tagId);
+				//si el tag existe en la tabla Tag de la DB, añadilo a Article:
 				if (tag != null)
 					article.Tags.Add(tag);
-			}
-			
+			};
+
 			await _context.Articles.AddAsync(article);
 			await _context.SaveChangesAsync();
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "ok" });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Article added successfully" });
 		}
-		
+
 		//UPDATE article
 		[HttpPut]
 		[Route("Edit/{id:int}")]
@@ -90,7 +90,7 @@ namespace API_Blog.Controllers
 			article.Content = articleDto.Content;
 			article.Tags = new List<Tag>();
 
-			foreach(var tagId in articleDto.TagIds)
+			foreach (var tagId in articleDto.Tags)
 			{
 				var tag = await _context.Tags.FindAsync(tagId);
 				if (tag != null)
